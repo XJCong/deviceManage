@@ -1,4 +1,4 @@
-package com.example.devicemanage.entity;
+package com.example.devicemanage.model;
 
 import lombok.Getter;
 import lombok.Setter;

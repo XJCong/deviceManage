@@ -2,7 +2,7 @@ package com.example.devicemanage.controller;
 
 import com.example.devicemanage.common.Result;
 import com.example.devicemanage.common.JwtResponse;
-import com.example.devicemanage.entity.LoginRequest;
+import com.example.devicemanage.model.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,8 +13,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.devicemanage.utils.JwtUtils;
-
-import java.util.Collection;
 
 @RestController
 @RequestMapping("/open")

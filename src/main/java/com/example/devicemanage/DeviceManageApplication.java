@@ -1,11 +1,12 @@
 package com.example.devicemanage;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
+@MapperScan("com.example.devicemanage.mapper")
 @SpringBootApplication
 public class DeviceManageApplication {
 
@@ -20,7 +21,7 @@ public class DeviceManageApplication {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/open/**")
-                        .allowedOrigins("http://localhost:5173") // 允许来自 Vue 开发环境的请求
+                        .allowedOrigins("http://localhost:5174") // 允许来自 Vue 开发环境的请求
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true)

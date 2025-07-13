@@ -22,8 +22,8 @@ public class Zczzb {
     private String zcmc;  // 设备名称
     private String ppxh;  // 品牌型号
     private String gg;    // 规格
-    private Double je;    // 金额
     private String jldw;  // 计量单位
+    private Double je;    // 金额
     private String cj;    // 厂家
     private String ggrq;  // 购置日期
     private String xz;    // 现状
