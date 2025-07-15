@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DeviceRepository {
@@ -36,4 +37,14 @@ public interface DeviceRepository {
      */
     @Select("SELECT COUNT(*) FROM zczzb")
     int countAll();
+
+
+    /** 根据 zcbh 查询单条设备 */
+    @Select("SELECT * FROM zczzb WHERE zcbh = #{zcbh}")
+    Optional<Zczzb> findById(@Param("zcbh") String zcbh);
+
+    /** 保存或更新整条记录（MyBatis-Plus 可用 insert/update，这里简单覆盖） */
+    @Update("REPLACE INTO zczzb (zcbh, zcflh, zcmc, ppxh, gg, je, jldw, cj, ggrq, xz, jfkm, cfdbh, cfdmc, syrbh, syr, jsr, ywdh, shzt, jzr, rzrq, bz, zfby1, zfby2, szby1, szby2, rqby1, srr, srrq) " +
+            "VALUES (#{zcbh}, #{zcflh}, #{zcmc}, #{ppxh}, #{gg}, #{je}, #{jldw}, #{cj}, #{ggrq}, #{xz}, #{jfkm}, #{cfdbh}, #{cfdmc}, #{syrbh}, #{syr}, #{jsr}, #{ywdh}, #{shzt}, #{jzr}, #{rzrq}, #{bz}, #{zfby1}, #{zfby2}, #{szby1}, #{szby2}, #{rqby1}, #{srr}, #{srrq})")
+    void save(@Param("zcbh") Zczzb device);
 }

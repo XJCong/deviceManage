@@ -10,8 +10,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -75,4 +77,29 @@ public class DeviceService {
             }
         }
     }
+
+
+    public Optional<Zczzb> findDeviceById(String zcbh) {
+        return deviceRepository.findById(zcbh);
+    }
+
+    public boolean updateDevice(String zcbh, Map<String, String> updates) {
+    Zczzb device = deviceRepository.findById(zcbh)
+            .orElseThrow(() -> new RuntimeException("设备不存在"));
+
+    // 使用反射设置字段值
+    updates.forEach((key, value) -> {
+        try {
+            String methodName = "set" + key.substring(0, 1).toUpperCase() + key.substring(1);
+            Method method = device.getClass().getMethod(methodName, String.class);
+            method.invoke(device, value);
+        } catch (Exception e) {
+            throw new RuntimeException("设置字段失败: " + key, e);
+        }
+    });
+
+    deviceRepository.save(device);
+    return true;
+}
+
 }

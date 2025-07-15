@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 // DeviceController.java
 @RestController
@@ -47,5 +48,23 @@ public class DeviceController {
             return ResponseEntity.status(500).body("设备信息更新失败: " + e.getMessage());
         }
     }
+    @GetMapping("/{zcbh}")
+    public ResponseEntity<Zczzb> getDeviceById(@PathVariable String zcbh) {
+        Optional<Zczzb> device = deviceService.findDeviceById(zcbh);
+        return device.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{zcbh}")
+    public ResponseEntity<?> updateDevice(
+            @PathVariable String zcbh,
+            @RequestBody Map<String, String> updates) {
+        boolean success = deviceService.updateDevice(zcbh, updates);
+        if (success) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().body("更新失败");
+        }
+    }
+
 }
 

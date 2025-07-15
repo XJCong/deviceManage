@@ -45,4 +45,5 @@ public class Zczzb {
     private String rqby1; // 日期备用1
     private String srr;   // 输入人
     private String srrq;  // 输入日期
+
 }
