@@ -47,4 +47,7 @@ public interface DeviceRepository {
     @Update("REPLACE INTO zczzb (zcbh, zcflh, zcmc, ppxh, gg, je, jldw, cj, ggrq, xz, jfkm, cfdbh, cfdmc, syrbh, syr, jsr, ywdh, shzt, jzr, rzrq, bz, zfby1, zfby2, szby1, szby2, rqby1, srr, srrq) " +
             "VALUES (#{zcbh}, #{zcflh}, #{zcmc}, #{ppxh}, #{gg}, #{je}, #{jldw}, #{cj}, #{ggrq}, #{xz}, #{jfkm}, #{cfdbh}, #{cfdmc}, #{syrbh}, #{syr}, #{jsr}, #{ywdh}, #{shzt}, #{jzr}, #{rzrq}, #{bz}, #{zfby1}, #{zfby2}, #{szby1}, #{szby2}, #{rqby1}, #{srr}, #{srrq})")
     void save(@Param("zcbh") Zczzb device);
+
+    @Select("SELECT dwbh FROM dwb")
+    List<String> getDwbList();
 }

@@ -1,13 +1,16 @@
 package com.example.devicemanage.entity;
 
+import jakarta.persistence.*;
+import lombok.*;
 
-/*
-单位表数据项（DWB）
-范围：全校所有单位，包括教学、科研、后勤、行政、生产等单位。
-规则：设备必须落实到最低一级上。字段要求：
-
- */
+@Data
+@Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "dwb")
 public class Dwb {
+    @Id
     private String dwbh; // 单位编号
     private String dwmc; // 单位名称
     private String fjdbh; // 父节点编号

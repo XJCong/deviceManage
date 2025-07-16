@@ -120,4 +120,7 @@ public class DeviceService {
     return true;
 }
 
+    public List<String> getDwbList() {
+        return deviceRepository.getDwbList();
+    }
 }

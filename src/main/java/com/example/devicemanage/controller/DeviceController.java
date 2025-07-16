@@ -1,9 +1,13 @@
 package com.example.devicemanage.controller;
 
 import com.example.devicemanage.common.Result;
+import com.example.devicemanage.entity.Dwb;
+import com.example.devicemanage.entity.Sbfl;
 import com.example.devicemanage.entity.Zcbdb;
 import com.example.devicemanage.entity.Zczzb;
 import com.example.devicemanage.mapper.HistoryRespository;
+import com.example.devicemanage.repository.DwbRepository;
+import com.example.devicemanage.repository.SbflRepository;
 import com.example.devicemanage.service.DeviceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +18,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 // DeviceController.java
 @RestController
@@ -27,6 +33,10 @@ public class DeviceController {
     private final DeviceService deviceService;
     @Autowired
     private HistoryRespository zcbdbRepository;
+
+    private final DwbRepository dwbRepository;
+
+    private final SbflRepository sbflRepository;
 
 
     @GetMapping("/getDevices")
@@ -96,5 +106,45 @@ public class DeviceController {
         return ResponseEntity.ok(result);
     }
 
+ @GetMapping("/dwb/list")
+public ResponseEntity<List<Map<String, String>>> getDepartmentList() {
+    try {
+        List<Dwb> departments = dwbRepository.findAll();
+
+        // 转换为前端需要的格式: [{value: "单位编号", label: "单位名称"}]
+        List<Map<String, String>> result = departments.stream()
+            .map(dept -> Map.of(
+                "value", dept.getDwbh(),  // 单位编号作为value
+                "label", dept.getDwmc()   // 单位名称作为显示文本
+            ))
+            .collect(Collectors.toList());
+
+        return ResponseEntity.ok(result);
+    } catch (Exception e) {
+        return ResponseEntity.status(500).body(null);
+        }
+    }
+        @GetMapping("/getFilteredDevices")
+        public ResponseEntity<List<Map<String, String>>> getFilteredDevicesList() {
+            try {
+                List<Sbfl> departments = sbflRepository.findAll();
+
+                // 显式转换为String类型
+                List<Map<String, String>> result = departments.stream()
+                    .map(dept -> {
+                        Map<String, String> map = new HashMap<>();
+                        map.put("value", dept.getFldm());  // 确保返回String
+                        map.put("label", dept.getFlmc());  // 确保返回String
+                        return map;
+                    })
+                    .collect(Collectors.toList());
+
+                return ResponseEntity.ok(result);
+            } catch (Exception e) {
+                return ResponseEntity.status(500).body(null);
+            }
+        }
+
 }
+
 
