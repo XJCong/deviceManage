@@ -1,5 +1,7 @@
 package com.example.devicemanage;
 
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,6 +15,13 @@ public class DeviceManageApplication {
     public static void main(String[] args) {
         // 启动Spring Boot应用程序
         SpringApplication.run(DeviceManageApplication.class, args);
+    }
+    // 添加分页插件
+    @Bean
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
+        return interceptor;
     }
     // 添加这个 Bean 来启用全局 CORS 支持
     @Bean

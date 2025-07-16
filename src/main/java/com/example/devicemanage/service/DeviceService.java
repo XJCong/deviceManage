@@ -2,8 +2,11 @@
 package com.example.devicemanage.service;
 
 import com.example.devicemanage.common.Result;
+import com.example.devicemanage.entity.Zcbdb;
 import com.example.devicemanage.entity.Zczzb;
 import com.example.devicemanage.mapper.DeviceRepository;
+import com.example.devicemanage.mapper.HistoryRespository;
+import com.example.devicemanage.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -20,6 +23,10 @@ import java.util.Set;
 public class DeviceService {
 
     private final DeviceRepository deviceRepository;
+    @Autowired
+    private  UserRepository userRepository;
+    @Autowired
+    private  HistoryRespository historyRespository;
 
     // 白名单字段集合，防止非法字段更新
     private static final Set<String> ALLOWED_FIELDS = Set.of(
@@ -66,6 +73,11 @@ public class DeviceService {
     public void updateDeviceInformation(List<Map<String, Object>> changes) throws Exception {
         for (Map<String, Object> change : changes) {
             String id = (String) change.get("zcbh");
+            String name= (String) change.get("user");
+            long user_id = userRepository.findByUsername(name)
+                .orElseThrow(() -> new RuntimeException("用户不存在"))
+                .getId();
+
             Map<String, Map<String, String>> fields = (Map<String, Map<String, String>>) change.get("changes");
 
             for (Map.Entry<String, Map<String, String>> entry : fields.entrySet()) {
@@ -73,6 +85,12 @@ public class DeviceService {
                 Map<String, String> valuePair = entry.getValue();
                 String oldValue = valuePair.get("old");
                 String newValue = valuePair.get("new");
+
+                //生成修改历史
+                Zczzb originalDevice = deviceRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("设备不存在"));
+                Zcbdb history = new Zcbdb(originalDevice, fieldName, oldValue, newValue,name,user_id);
+                historyRespository.insert( history);
                 deviceRepository.updateField(id, fieldName, newValue);
             }
         }
